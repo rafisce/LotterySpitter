@@ -19,19 +19,16 @@ used_nums = Used()
 used_nums.simplify()
 
 
-def generate(num, numlist):
-    lottery = []
+def generate(num, num_list):
     trv.delete(*trv.get_children())
     for n in range(num):
         while True:
-            temp= random.sample(range(1, 37), 6)
+            temp = random.sample(range(1, 37), 6)
             temp.sort()
-            temp.append(random.randint(1,7))
-            if temp not in numlist:
-                lottery.append(temp)
+            temp.append(random.randint(1, 7))
+            if temp not in num_list:
+                trv.insert('', END, values=[n+1]+temp, tags="even" if n % 2 == 0 else "odd")
                 break
-    for lotto in lottery:
-        trv.insert('',END,values=lotto)
 
 
 
@@ -53,14 +50,17 @@ window.grid_columnconfigure(1, weight=1)
 label = LabelFrame(f_right, text="number of rows", labelanchor='ne')
 label.pack(padx=5, pady=40)
 row_options = ttk.Combobox(label, state="readonly",
-                           values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13,14])
+                           values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
 row_options.current(0)
 row_options.pack(pady=10, padx=10)
 row_options.configure(justify='right')
 scrollbar = Scrollbar(f_inside_left)
 scrollbar.pack(side=RIGHT, fill=Y)
-columns = ("1", "2", "3", "4", "5", "6", "7")
+columns = ("0", "1", "2", "3", "4", "5", "6", "7")
 trv = ttk.Treeview(f_inside_left, columns=columns, yscrollcommand=scrollbar.set, show='headings')
+trv.tag_configure("even", background="#ccffff")
+trv.tag_configure("odd", background="#ffffff")
+trv.heading("0", text="no.")
 trv.heading("1", text="1")
 trv.heading("2", text="2")
 trv.heading("3", text="3")
@@ -68,13 +68,14 @@ trv.heading("4", text="4")
 trv.heading("5", text="5")
 trv.heading("6", text="6")
 trv.heading("7", text="powerball")
-trv.column("1", width=30, minwidth=0, stretch=YES,anchor=CENTER)
-trv.column("2", width=30, minwidth=0, stretch=YES,anchor=CENTER)
-trv.column("3", width=30, minwidth=0, stretch=YES,anchor=CENTER)
-trv.column("4", width=30, minwidth=0, stretch=YES,anchor=CENTER)
-trv.column("5", width=30, minwidth=0, stretch=YES,anchor=CENTER)
-trv.column("6", width=30, minwidth=0, stretch=YES,anchor=CENTER)
-trv.column("7", width=30, minwidth=0, stretch=YES,anchor=CENTER)
+trv.column("0", width=30, minwidth=0, stretch=YES, anchor=CENTER)
+trv.column("1", width=30, minwidth=0, stretch=YES, anchor=CENTER)
+trv.column("2", width=30, minwidth=0, stretch=YES, anchor=CENTER)
+trv.column("3", width=30, minwidth=0, stretch=YES, anchor=CENTER)
+trv.column("4", width=30, minwidth=0, stretch=YES, anchor=CENTER)
+trv.column("5", width=30, minwidth=0, stretch=YES, anchor=CENTER)
+trv.column("6", width=30, minwidth=0, stretch=YES, anchor=CENTER)
+trv.column("7", width=30, minwidth=0, stretch=YES, anchor=CENTER)
 trv.pack(fill=X)
 scrollbar.configure(command=trv.yview)
 
